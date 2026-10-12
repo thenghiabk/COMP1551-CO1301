@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="Lab1/Lab1.csproj" Id="b9b5aafc-9d1c-448f-8fae-89baf9891308" />
   <Project Path="Lab2/Lab2.csproj" Id="f3d08dd5-4f93-4331-b743-ed757686c640" />
+  <Project Path="Lab3/Lab3.csproj" Id="5448b122-8b25-485b-ac91-7ce26082bbf1" />
   <Project Path="LabX/LabX.csproj" Id="62e337ea-3ecb-4683-a3b5-732d60078f04" />
   <Project Path="Week01/Week01.csproj" Id="75ab0c64-6a90-4248-afd6-bfa6a3527909" />
   <Project Path="Week02/Week02.csproj" Id="05954a76-eabb-44ee-b3a1-a58bb4564d66" />
