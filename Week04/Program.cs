@@ -1,31 +1,12 @@
 ﻿namespace Week04
 {
-    class Book
+    abstract class LibraryItem
     {
         // Fields
         private string _title;
-        private string author;
-        private int _pages;
-        private string borrower;
 
         // Properties
-        public int Pages
-        {
-            get
-            {
-                return _pages;
-            }
-            set
-            {
-                if (value < 10)
-                {
-                    throw new ArgumentOutOfRangeException("Pages must be positive");
-                }
-
-                this._pages = value;
-            }
-        }
-
+        public int ItemId { get; set; }
         public string Title
         {
             set
@@ -43,45 +24,78 @@
             }
         }
 
+        // Helpers
+        // 1. Abstract Contract (No body)
+        // MUST be implemented by all child classes!
+        public abstract void Checkout();
+
+        // 2. Concrete Shared Logic
+        // Available to all derived types
+        public void DisplayInfo()
+        {
+            Console.WriteLine($"Item: {Title}");
+        }
+    }
+
+    class Book : LibraryItem
+    {
+        // Fields
+        
+        private string _author;
+        private int _pages;
+        private string _borrower;
+
+        // Properties
+        public int Pages
+        {
+            get
+            {
+                return _pages;
+            }
+            set
+            {
+                // validation
+                if (value < 10)
+                {
+                    throw new ArgumentOutOfRangeException("Pages must be positive");
+                }
+
+                this._pages = value;
+            }
+        }
+
+        
+
+        public string Author { get => _author; set => _author = value; }
+        public string Borrower { get => _borrower; set => _borrower = value; }
+
 
 
         // Constructors
         public Book()
         {
-            this.author = "";
+            this.Author = "";
             this.Title = "";
             this.Pages = 0;
-            this.borrower = "";
+            this.Borrower = "";
         }
 
         public Book(string title, string author, int pages)
         {
             this.Title = title;
-            this.author = author;
+            this.Author = author;
             this.Pages = pages;
-            this.borrower = "None";
+            this.Borrower = "None";
         }
 
         // Helpers
 
-        public void SetBorrower(string borrower)
-        {
-            this.borrower = borrower;
-        }
-
         public void GetSummary()
         {
-            //Console.WriteLine($"Title: {this._title}");
             Console.WriteLine($"Title: {this.Title}");
-
-
-
-            Console.WriteLine($"Author: {this.author}");
-            Console.WriteLine($"Pages: {this._pages}");
-            Console.WriteLine($"Title: {this.Title}");
-            Console.WriteLine($"Author: {this.author}");
+            Console.WriteLine($"Author: {this.Author}");
             Console.WriteLine($"Pages: {this.Pages}");
-            Console.WriteLine($"Borrower: {this.borrower}");
+            Console.WriteLine($"Borrower: {this.Borrower}");
         }
 
     }
