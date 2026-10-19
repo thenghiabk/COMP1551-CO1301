@@ -111,6 +111,65 @@
         }
 
     }
+    class EBook : LibraryItem
+    {
+        // Fields
+        private string _author;
+        private string _borrower;
+        private double _fileSizeMB;
+
+        // Properties
+
+        public string Author { get => _author; set => _author = value; }
+        public string Borrower { get => _borrower; set => _borrower = value; }
+        public double FileSizeMB { 
+            get { return this._fileSizeMB; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Filesize must be positive");
+                }
+
+                this._fileSizeMB = value;
+            }
+        }
+
+
+
+        // Constructors
+        public EBook() : base(0, "")
+        {
+            this.Author = "";
+            this.Title = "";
+            this.Borrower = "";
+        }
+
+        public EBook(int id, string title, string author, double fileSizeMB) : base(id, title)
+        {
+            this.Title = title;
+            this.Author = author;
+            this.FileSizeMB = fileSizeMB;
+            this.Borrower = "None";
+        }
+
+        // Helpers
+
+        public override void Checkout()
+        {
+            Console.WriteLine($"[Book] '{Title}' by {Author}");
+            Console.WriteLine("Due back in 14 days.");
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
+            Console.WriteLine($"Author: {this.Author}");
+            Console.WriteLine($"File size: {this.FileSizeMB} (MB)");
+            Console.WriteLine($"Borrower: {this.Borrower}");
+        }
+
+    }
     internal class Program
     {
         static void Main(string[] args)
@@ -121,6 +180,10 @@
             Book myBook = new Book(1, "The Lord of the Rings", "J. R. R. Tolkien", 1178);
 
             myBook.DisplayInfo();
+
+            EBook myEBook = new EBook(2, "Harry Potter", "Joanne Rowling", 3.55);
+
+            myEBook.DisplayInfo();
 
 
         }
