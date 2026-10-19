@@ -78,6 +78,9 @@
 
             Console.WriteLine($"Author: {this.author}");
             Console.WriteLine($"Pages: {this._pages}");
+            Console.WriteLine($"Title: {this.Title}");
+            Console.WriteLine($"Author: {this.author}");
+            Console.WriteLine($"Pages: {this.Pages}");
             Console.WriteLine($"Borrower: {this.borrower}");
         }
 
