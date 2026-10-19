@@ -24,6 +24,13 @@
             }
         }
 
+        // Constructor
+        public LibraryItem(int itemId, string Title)
+        {
+            this.ItemId = itemId;
+            this.Title = Title;
+        }
+
         // Helpers
         // 1. Abstract Contract (No body)
         // MUST be implemented by all child classes!
@@ -31,8 +38,9 @@
 
         // 2. Concrete Shared Logic
         // Available to all derived types
-        public void DisplayInfo()
+        public virtual void DisplayInfo()
         {
+            Console.WriteLine($"Id: {ItemId}");
             Console.WriteLine($"Item: {Title}");
         }
     }
@@ -40,7 +48,6 @@
     class Book : LibraryItem
     {
         // Fields
-        
         private string _author;
         private int _pages;
         private string _borrower;
@@ -64,15 +71,14 @@
             }
         }
 
-        
-
         public string Author { get => _author; set => _author = value; }
         public string Borrower { get => _borrower; set => _borrower = value; }
+        public string ISBN { get; set; }
 
 
 
         // Constructors
-        public Book()
+        public Book() : base(0, "")
         {
             this.Author = "";
             this.Title = "";
@@ -80,7 +86,7 @@
             this.Borrower = "";
         }
 
-        public Book(string title, string author, int pages)
+        public Book(int id, string title, string author, int pages) : base(id, title)
         {
             this.Title = title;
             this.Author = author;
@@ -90,9 +96,15 @@
 
         // Helpers
 
-        public void GetSummary()
+        public override void Checkout()
         {
-            Console.WriteLine($"Title: {this.Title}");
+            Console.WriteLine($"[Book] '{Title}' by {Author}");
+            Console.WriteLine("Due back in 14 days.");
+        }
+
+        public override void DisplayInfo()
+        {
+            base.DisplayInfo();
             Console.WriteLine($"Author: {this.Author}");
             Console.WriteLine($"Pages: {this.Pages}");
             Console.WriteLine($"Borrower: {this.Borrower}");
@@ -106,13 +118,9 @@
             Console.WriteLine("Create Book objects");
 
             //  The Lord of the Rings, J. R. R. Tolkien, 1178
-            Book myBook = new Book("The Lord of the Rings", "J. R. R. Tolkien", 1178);
+            Book myBook = new Book(1, "The Lord of the Rings", "J. R. R. Tolkien", 1178);
 
-            //myBook.pages = -1183;
-            //myBook.SetPages(-1183);
-            myBook.Pages = 1183;
-
-            myBook.GetSummary();
+            myBook.DisplayInfo();
 
 
         }
