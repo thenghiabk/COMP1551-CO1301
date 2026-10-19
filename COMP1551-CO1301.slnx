@@ -6,4 +6,5 @@
   <Project Path="Week01/Week01.csproj" Id="75ab0c64-6a90-4248-afd6-bfa6a3527909" />
   <Project Path="Week02/Week02.csproj" Id="05954a76-eabb-44ee-b3a1-a58bb4564d66" />
   <Project Path="Week03/Week03.csproj" Id="0acf721e-e1b3-41c9-b23b-2653437ea40e" />
+  <Project Path="Week04/Week04.csproj" Id="849fec95-dd4a-4f01-84e0-6b8d37dfe668" />
 </Solution>
