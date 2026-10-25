@@ -135,8 +135,6 @@
             }
         }
 
-
-
         // Constructors
         public EBook() : base(0, "")
         {
