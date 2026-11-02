@@ -8,6 +8,7 @@ namespace Lab4
 {
     internal abstract class LibraryItem
     {
+        // Properties
         public string ItemID { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }

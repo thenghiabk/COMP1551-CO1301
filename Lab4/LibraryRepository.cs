@@ -8,6 +8,7 @@ namespace Lab4
 {
     internal class LibraryRepository
     {
+        // Fields
         private List<LibraryItem> items;
         private int nextId;
 
@@ -61,10 +62,11 @@ namespace Lab4
                 {
                     return book;
                 }
-                //provide code to search for EBooks by ISBN as well 
-            
+                if (items[i] is EBook ebook && ebook.ISBN == isbn)
+                {
+                    return ebook;
+                }
             }
-
             return null;
         }
 
@@ -102,7 +104,19 @@ namespace Lab4
             return books;
         }
 
-        
+        // Get all ebooks
+        public List<EBook> GetAllEBooks()
+        {
+            List<EBook> ebooks = new List<EBook>();
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i] is EBook ebook)
+                {
+                    ebooks.Add(ebook);
+                }
+            }
+            return ebooks;
+        }
 
         // Get available items
         public List<LibraryItem> GetAvailableItems()
@@ -167,36 +181,63 @@ namespace Lab4
         // Get total count
         public int GetCount()
         {
-            //you need to implement this method to return the total count of items in the repository
-            return 0;
+            return items.Count;
         }
 
         // Get count of books
         public int GetBookCount()
         {
-            //you need to implement this method to return the count of books in the repository
-            return 0;
+            int count = 0;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i] is Book)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         // Get count of ebooks
         public int GetEBookCount()
         {
-            //you need to implement this method to return the count of ebooks in the repository
-            return 0;
+            int count = 0;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i] is EBook)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         // Get available count
         public int GetAvailableCount()
         {
-            //you need to implement this method to return the count of available items in the repository
-            return 0;
+            int count = 0;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].IsAvailable)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         // Get borrowed count
         public int GetBorrowedCount()
         {
-            //you need to implement this method to return the count of borrowed items in the repository
-            return 0;
+            int count = 0;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (!items[i].IsAvailable)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         // Get oldest publication year
@@ -242,8 +283,10 @@ namespace Lab4
             {
                 prefix = "B";
             }
-            //provide code to generate unique ID based on item type (B for Book, E for EBook, M for Magazine)
-            
+            else if (item is EBook)
+            {
+                prefix = "E";
+            }
 
             string id = prefix + nextId.ToString("D4");
             nextId++;

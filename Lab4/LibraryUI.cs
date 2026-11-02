@@ -20,7 +20,6 @@ namespace Lab4
         {
             Console.WriteLine("╔═══════════════════════════════════════╗");
             Console.WriteLine("║    SMARTLIBRARY MANAGEMENT SYSTEM     ║");
-            Console.WriteLine("║      (Using 3 Tier Architecutre)      ║");
             Console.WriteLine("╚═══════════════════════════════════════╝");
             Console.WriteLine();
 
@@ -86,7 +85,7 @@ namespace Lab4
                 }
                 else
                 {
-                    Console.WriteLine("\n Invalid choice!");
+                    Console.WriteLine("\n⚠ Invalid choice!");
                 }
             }
 
@@ -99,30 +98,52 @@ namespace Lab4
         {
             Console.WriteLine("\n=== ADD NEW BOOK ===");
 
-            // Prompt and read ISBN
             Console.Write("ISBN: ");
             string isbn = Console.ReadLine();
 
-            // TODO: Prompt and read Title
+            Console.Write("Title: ");
+            string title = Console.ReadLine();
 
-            // TODO: Prompt and read Author
+            Console.Write("Author: ");
+            string author = Console.ReadLine();
 
-            // TODO: Prompt and read Publication Year
-            // HINT: Use int.TryParse() to validate
+            Console.Write("Publication Year: ");
+            string yearInput = Console.ReadLine();
+            int year;
 
-            // TODO: Prompt and read Publisher
+            if (!int.TryParse(yearInput, out year))
+            {
+                Console.WriteLine("\n⚠ Invalid year format!");
+                return;
+            }
 
-            // TODO: Prompt and read Pages
-            // HINT: Use int.TryParse() to validate
+            Console.Write("Publisher: ");
+            string publisher = Console.ReadLine();
 
-            // TODO: Prompt and read Genre
+            Console.Write("Pages: ");
+            string pagesInput = Console.ReadLine();
+            int pages;
 
-            // Call manager.AddBook() with all parameters
-            //string result = manager.AddBook(isbn, title, author, year, publisher, pages, genre);
+            if (!int.TryParse(pagesInput, out pages))
+            {
+                Console.WriteLine("\n⚠ Invalid page count!");
+                return;
+            }
 
-            // Display result
-            // If starts with "SUCCESS", show success message
-            // If starts with "ERROR", show with error message
+            Console.Write("Genre: ");
+            string genre = Console.ReadLine();
+
+            string result = manager.AddBook(isbn, title, author, year, publisher, pages, genre);
+
+            Console.WriteLine();
+            if (result.StartsWith("SUCCESS"))
+            {
+                Console.WriteLine("✓ " + result.Substring(9));
+            }
+            else
+            {
+                Console.WriteLine("⚠ " + result.Substring(7));
+            }
         }
 
         // Add ebook menu
@@ -130,29 +151,52 @@ namespace Lab4
         {
             Console.WriteLine("\n=== ADD NEW E-BOOK ===");
 
-            // Prompt and read ISBN
             Console.Write("ISBN: ");
             string isbn = Console.ReadLine();
 
-            // TODO: Prompt and read Title
+            Console.Write("Title: ");
+            string title = Console.ReadLine();
 
-            // TODO: Prompt and read Author
+            Console.Write("Author: ");
+            string author = Console.ReadLine();
 
-            // TODO: Prompt and read Pages
-            // HINT: Use int.TryParse() to validate
+            Console.Write("Publication Year: ");
+            string yearInput = Console.ReadLine();
+            int year;
 
-            // TODO: Prompt and read Download URL
+            if (!int.TryParse(yearInput, out year))
+            {
+                Console.WriteLine("\n⚠ Invalid year format!");
+                return;
+            }
 
-            // TODO: Prompt and read Format (PDF/EPUB/MOBI)
+            Console.Write("Download URL: ");
+            string url = Console.ReadLine();
 
-            // TODO: Prompt and read File Size (MB)
+            Console.Write("Format (PDF/EPUB/MOBI): ");
+            string format = Console.ReadLine();
 
-            // Call manager.AddEBook() with all parameters
-            //string result = manager.AddEBook(isbn, title, author, year, url, format, fileSize);
+            Console.Write("File Size (MB): ");
+            string sizeInput = Console.ReadLine();
+            double fileSize;
 
-            // Display result
-            // If starts with "SUCCESS", show success message
-            // If starts with "ERROR", show with error message
+            if (!double.TryParse(sizeInput, out fileSize))
+            {
+                Console.WriteLine("\n⚠ Invalid file size!");
+                return;
+            }
+
+            string result = manager.AddEBook(isbn, title, author, year, url, format, fileSize);
+
+            Console.WriteLine();
+            if (result.StartsWith("SUCCESS"))
+            {
+                Console.WriteLine("✓ " + result.Substring(9));
+            }
+            else
+            {
+                Console.WriteLine("⚠ " + result.Substring(7));
+            }
         }
 
         // View all items menu
@@ -160,18 +204,23 @@ namespace Lab4
         {
             Console.WriteLine("\n=== ALL LIBRARY ITEMS ===");
 
-            // Get all items from manager
             List<LibraryItem> items = manager.GetAllItems();
 
-            // If count is 0, display "No items in library"
+            if (items.Count == 0)
+            {
+                Console.WriteLine("No items in library.");
+                return;
+            }
 
-            // Display total count
+            Console.WriteLine("Total items: " + items.Count);
+            Console.WriteLine();
 
-            // Use for loop to iterate through items
-            // For each item, display item number
-            // Call item.DisplayInfo() - notice polymorphism!
-            // Display blank line between items
-
+            for (int i = 0; i < items.Count; i++)
+            {
+                Console.WriteLine("--- Item #" + (i + 1) + " ---");
+                items[i].DisplayInfo();
+                Console.WriteLine();
+            }
         }
 
         // Search items menu
@@ -212,11 +261,11 @@ namespace Lab4
             Console.WriteLine();
             if (result.StartsWith("SUCCESS"))
             {
-                Console.WriteLine(" " + result.Substring(9));
+                Console.WriteLine("✓ " + result.Substring(9));
             }
             else
             {
-                Console.WriteLine(" " + result.Substring(7));
+                Console.WriteLine("⚠ " + result.Substring(7));
             }
         }
 
@@ -232,11 +281,11 @@ namespace Lab4
             Console.WriteLine();
             if (result.StartsWith("SUCCESS"))
             {
-                Console.WriteLine(" " + result.Substring(9));
+                Console.WriteLine("✓ " + result.Substring(9));
             }
             else
             {
-                Console.WriteLine(" " + result.Substring(7));
+                Console.WriteLine("⚠ " + result.Substring(7));
             }
         }
 
@@ -252,11 +301,11 @@ namespace Lab4
             Console.WriteLine();
             if (result.StartsWith("SUCCESS"))
             {
-                Console.WriteLine(" " + result.Substring(9));
+                Console.WriteLine("✓ " + result.Substring(9));
             }
             else
             {
-                Console.WriteLine(" " + result.Substring(7));
+                Console.WriteLine("⚠ " + result.Substring(7));
             }
         }
 
@@ -272,11 +321,11 @@ namespace Lab4
             Console.WriteLine();
             if (result.StartsWith("SUCCESS"))
             {
-                Console.WriteLine(" " + result.Substring(9));
+                Console.WriteLine("✓ " + result.Substring(9));
             }
             else
             {
-                Console.WriteLine(" " + result.Substring(7));
+                Console.WriteLine("⚠ " + result.Substring(7));
             }
         }
 

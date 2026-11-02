@@ -20,31 +20,42 @@ namespace Lab4
                               string publisher, int pages, string genre)
         {
             // Business validation
-            // Validation 1: Check if title is empty
-            // If empty, return "ERROR: Title cannot be empty"
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                return "ERROR: Title cannot be empty";
+            }
 
-            // Validation 2: Check if author is empty
-            // If empty, return "ERROR: Author cannot be empty"
+            if (string.IsNullOrWhiteSpace(author))
+            {
+                return "ERROR: Author cannot be empty";
+            }
 
-            // Validation 3: Check if isbn is empty
-            // If empty, return "ERROR: ISBN cannot be empty"
+            if (string.IsNullOrWhiteSpace(isbn))
+            {
+                return "ERROR: ISBN cannot be empty";
+            }
 
-            // Validation 4: Check if year is valid (between 1000 and current year)
-            // HINT: Use DateTime.Now.Year for current year
-            // If invalid, return "ERROR: Invalid publication year"
+            if (year < 1000 || year > DateTime.Now.Year)
+            {
+                return "ERROR: Invalid publication year";
+            }
 
-            // Validation 5: Check if pages is positive
-            // If not, return "ERROR: Page count must be positive"
+            if (pages <= 0)
+            {
+                return "ERROR: Page count must be positive";
+            }
 
-            // Business Rule: Check for duplicate ISBN using repository.ISBNExists()
-            // If exists, return "ERROR: Book with this ISBN already exists!"
+            // Check for duplicate ISBN
+            if (repository.ISBNExists(isbn))
+            {
+                return "ERROR: Book with this ISBN already exists!";
+            }
 
-            // Create a new Book object with the parameters
-            // HINT: Pass empty string "" for itemId (will be auto-generated)
+            // Create and add book
+            Book newBook = new Book("", isbn, title, author, year, publisher, pages, genre);
+            repository.Add(newBook);
 
-            // Add the book to repository
-
-            return "SUCCESS: Book '" + title + "' added successfully with ID: ??" ;
+            return "SUCCESS: Book '" + title + "' added successfully with ID: " + newBook.ItemID;
         }
 
         // Add a new ebook
@@ -52,21 +63,58 @@ namespace Lab4
                                string downloadUrl, string format, double fileSize)
         {
             // Business validation
-            // Similar validation to AddBook:
-            // - Check title, author, isbn not empty
-            // - Check downloadUrl not empty
-            // - Check fileSize is positive
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                return "ERROR: Title cannot be empty";
+            }
 
-            // Additional validation: Check format is valid (PDF, EPUB, MOBI, AZW3)
-            // HINT: Create an array of valid formats and check if format matches
+            if (string.IsNullOrWhiteSpace(author))
+            {
+                return "ERROR: Author cannot be empty";
+            }
+
+            if (string.IsNullOrWhiteSpace(isbn))
+            {
+                return "ERROR: ISBN cannot be empty";
+            }
+
+            if (string.IsNullOrWhiteSpace(downloadUrl))
+            {
+                return "ERROR: Download URL cannot be empty";
+            }
+
+            string[] validFormats = { "PDF", "EPUB", "MOBI", "AZW3" };
+            bool validFormat = false;
+            for (int i = 0; i < validFormats.Length; i++)
+            {
+                if (format.ToUpper() == validFormats[i])
+                {
+                    validFormat = true;
+                    break;
+                }
+            }
+
+            if (!validFormat)
+            {
+                return "ERROR: Format must be PDF, EPUB, MOBI, or AZW3";
+            }
+
+            if (fileSize <= 0)
+            {
+                return "ERROR: File size must be positive";
+            }
 
             // Check for duplicate ISBN
+            if (repository.ISBNExists(isbn))
+            {
+                return "ERROR: E-Book with this ISBN already exists!";
+            }
 
-            // Create new EBook object
+            // Create and add ebook
+            EBook newEBook = new EBook("", isbn, title, author, year, downloadUrl, format, fileSize);
+            repository.Add(newEBook);
 
-            // Add to repository
-
-            return "SUCCESS: E-Book '" + title + "' added successfully with ID: ??" ;
+            return "SUCCESS: E-Book '" + title + "' added successfully with ID: " + newEBook.ItemID;
         }
 
         // Get all items
@@ -115,37 +163,50 @@ namespace Lab4
         // Borrow item
         public string BorrowItem(string itemId)
         {
-            // Find the item using repository.FindByID()
+            LibraryItem item = repository.FindByID(itemId);
 
-            // If item is null, return error
+            if (item == null)
+            {
+                return "ERROR: Item not found!";
+            }
 
-            // If item is not available, return error
+            if (!item.IsAvailable)
+            {
+                return "ERROR: Item is already borrowed!";
+            }
 
-            // Call item.Borrow() method
-
-            // Return success message with category and title
-
-            return "";
+            item.Borrow();
+            return "SUCCESS: " + item.GetCategory() + " '" + item.Title + "' borrowed successfully!";
         }
 
         // Return item
         public string ReturnItem(string itemId)
         {
-            // Find the item
+            LibraryItem item = repository.FindByID(itemId);
 
-            // If item is null, return error
+            if (item == null)
+            {
+                return "ERROR: Item not found!";
+            }
 
-            // If item is available (not borrowed), return error
+            if (item.IsAvailable)
+            {
+                return "ERROR: Item was not borrowed!";
+            }
 
-            // Get days overdue using item.GetDaysOverdue()
-            // Get late fee using item.GetCurrentLateFee()
+            int daysOverdue = item.GetDaysOverdue();
+            decimal lateFee = item.GetCurrentLateFee();
 
-            // Call item.Return() method
+            item.Return();
 
-            // If overdue, return success message with fee info
-            // Otherwise, return simple success message
-
-            return "";
+            if (daysOverdue > 0)
+            {
+                return "SUCCESS: Item returned. " + daysOverdue + " days overdue. Late fee: $" + lateFee.ToString("0.00");
+            }
+            else
+            {
+                return "SUCCESS: Item '" + item.Title + "' returned on time!";
+            }
         }
 
         // Renew item
@@ -209,9 +270,9 @@ namespace Lab4
                                   1949, "Signet Classic", 328, "Dystopian");
             repository.Add(book3);
 
-            //EBook ebook1 = new EBook("", "978-1449355739", "Learning Python", "Mark Lutz",
-            //                         2013, "https://example.com/python.pdf", "PDF", 3.5);
-            //repository.Add(ebook1);
+            EBook ebook1 = new EBook("", "978-1449355739", "Learning Python", "Mark Lutz",
+                                     2013, "https://example.com/python.pdf", "PDF", 3.5);
+            repository.Add(ebook1);
         }
     }
 }
