@@ -8,11 +8,14 @@ namespace Lab4
 {
     internal class EBook : LibraryItem
     {
+        // Properties
         public string ISBN { get; set; }
         public string DownloadURL { get; set; }
         public string FileFormat { get; set; } // PDF, EPUB, MOBI
         public double FileSizeMB { get; set; }
         public int DownloadLimit { get; set; }
+
+        // Constructor
 
         public EBook(string itemId, string isbn, string title, string author,
                      int year, string downloadUrl, string format, double fileSize)

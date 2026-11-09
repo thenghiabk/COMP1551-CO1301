@@ -12,6 +12,8 @@ namespace Lab4
         private List<LibraryItem> items;
         private int nextId;
 
+        // Constructor
+
         public LibraryRepository()
         {
             items = new List<LibraryItem>();
