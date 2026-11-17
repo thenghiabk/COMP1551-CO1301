@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="HelloGUI/HelloGUI.csproj" Id="41cfc68a-6838-4fc6-8a33-dfd4b003c9f3" />
   <Project Path="Lab1/Lab1.csproj" Id="b9b5aafc-9d1c-448f-8fae-89baf9891308" />
   <Project Path="Lab2/Lab2.csproj" Id="f3d08dd5-4f93-4331-b743-ed757686c640" />
   <Project Path="Lab3/Lab3.csproj" Id="5448b122-8b25-485b-ac91-7ce26082bbf1" />
