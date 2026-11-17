@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab5
+namespace Lab7
 {
-    internal class LibraryUI
+    internal class ConsoleView : ILibraryView
     {
         private LibraryManager manager;
 
-        public LibraryUI(LibraryManager manager)
+        public ConsoleView(LibraryManager manager)
         {
             this.manager = manager;
         }
@@ -27,20 +27,10 @@ namespace Lab5
 
             while (running)
             {
-                Console.WriteLine("\n=== MAIN MENU ===");
-                Console.WriteLine("1. Add New Book");
-                Console.WriteLine("2. Add New E-Book");
-                Console.WriteLine("3. View All Items");
-                Console.WriteLine("4. Search Items");
-                Console.WriteLine("5. Borrow Item");
-                Console.WriteLine("6. Return Item");
-                Console.WriteLine("7. Renew Item");
-                Console.WriteLine("8. Delete Item");
-                Console.WriteLine("9. Statistics");
-                Console.WriteLine("0. Exit");
-                Console.Write("\nEnter your choice (0-9): ");
+                DisplayMenu();
 
-                string choice = Console.ReadLine();
+                string choice = GetInput("Enter your choice (0-9): ");
+
 
                 if (choice == "1")
                 {
@@ -350,6 +340,64 @@ namespace Lab5
                 Console.WriteLine("Oldest: " + oldest);
                 Console.WriteLine("Newest: " + newest);
             }
+        }
+
+        public void DisplayMenu()
+        {
+            Console.WriteLine("\n=== MAIN MENU ===");
+            Console.WriteLine("1. Add New Book");
+            Console.WriteLine("2. Add New E-Book");
+            Console.WriteLine("3. View All Items");
+            Console.WriteLine("4. Search Items");
+            Console.WriteLine("5. Borrow Item");
+            Console.WriteLine("6. Return Item");
+            Console.WriteLine("7. Renew Item");
+            Console.WriteLine("8. Delete Item");
+            Console.WriteLine("9. Statistics");
+            Console.WriteLine("0. Exit");
+        }
+
+        public void ShowMessage(string message)
+        {
+            Console.WriteLine("\nOK: " + message);
+        }
+
+        public void ShowError(string message)
+        {
+            Console.WriteLine("\nError: " + message);
+        }
+
+        public string GetInput(string prompt)
+        {
+            Console.Write(prompt);
+            return Console.ReadLine() ?? "";
+        }
+
+        public void DisplayItems(List<LibraryItem> items)
+        {
+            if (items == null || items.Count == 0)
+            {
+                Console.WriteLine("\nNo items found.");
+                return;
+            }
+
+            Console.WriteLine("\nTotal items: " + items.Count);
+            Console.WriteLine();
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                Console.WriteLine("--- Item #" + (i + 1) + " ---");
+                items[i].DisplayInfo();
+                Console.WriteLine();
+            }
+        }
+
+        public void DisplayStatistics(int total, int available, int borrowed)
+        {
+            Console.WriteLine("\n=== LIBRARY STATISTICS ===");
+            Console.WriteLine("Total Items: " + total);
+            Console.WriteLine("Available: " + available);
+            Console.WriteLine("Borrowed: " + borrowed);
         }
     }
 }
