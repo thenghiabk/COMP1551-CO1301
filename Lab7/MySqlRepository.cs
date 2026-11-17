@@ -256,7 +256,23 @@ namespace Lab7
 
         public List<LibraryItem> GetAll()
         {
-            throw new NotImplementedException();
+            List<LibraryItem> results = new List<LibraryItem>();
+            using (MySqlConnection conn = CreateConnection())
+            {
+                conn.Open();
+                string sql = BASE_SELECT_SQL + " ORDER BY li.item_id";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(MapRowToItem(reader));
+                    }
+                }
+            }
+
+            return results;
         }
 
         public List<Book> GetAllBooks()

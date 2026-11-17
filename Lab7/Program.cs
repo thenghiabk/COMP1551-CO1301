@@ -7,8 +7,9 @@ namespace Lab7
         static void Main(string[] args)
         {
             // Layer 1
-            ILibraryRepository repo = new InMemoryRepository();
-            
+            //ILibraryRepository repo = new InMemoryRepository();
+            ILibraryRepository repo = new MySqlRepository(DbConfig.ConnectionString);
+
             // Layer 2
             LibraryManager manager = new LibraryManager(repo);
             // Add sample data
@@ -16,7 +17,6 @@ namespace Lab7
 
             // Layer 3
             ILibraryView view = new ConsoleView(manager);
-            view.Run();
 
 
             // Run the application
